@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ProyectoVentas.Models;
 
@@ -11,9 +12,11 @@ using ProyectoVentas.Models;
 namespace ProyectoVentas.Migrations
 {
     [DbContext(typeof(VentasContext))]
-    partial class VentasContextModelSnapshot : ModelSnapshot
+    [Migration("20231117191206_FotoPefil")]
+    partial class FotoPefil
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -131,8 +134,8 @@ namespace ProyectoVentas.Migrations
 
                     b.Property<string>("Clave")
                         .IsRequired()
-                        .HasMaxLength(1000)
-                        .HasColumnType("nvarchar(1000)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("Correo")
                         .IsRequired()

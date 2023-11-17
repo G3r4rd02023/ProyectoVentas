@@ -15,12 +15,15 @@ namespace ProyectoVentas.Models.Entidades
         public string Correo { get; set; }
 
         [Required(ErrorMessage = "El campo {0} es obligatorio.")]
-        [MaxLength(50, ErrorMessage = "El campo {0} no puede tener más de {1} carácteres")]
+        [MaxLength(1000, ErrorMessage = "El campo {0} no puede tener más de {1} carácteres")]
         public string Clave { get; set; }
 
         [Required(ErrorMessage = "El campo {0} es obligatorio.")]
         [MaxLength(50, ErrorMessage = "El campo {0} no puede tener más de {1} carácteres")]
         public string Rol { get; set; }
+
+        [Display(Name = "Imagen")]
+        public string URLFotoPerfil { get; set; }
 
         public DateTime FechaCreacion { get; set; }
     }

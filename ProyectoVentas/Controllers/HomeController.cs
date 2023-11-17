@@ -1,6 +1,9 @@
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
 using ProyectoVentas.Models;
 using System.Diagnostics;
+using System.Security.Claims;
 
 namespace ProyectoVentas.Controllers
 {
@@ -15,6 +18,22 @@ namespace ProyectoVentas.Controllers
 
         public IActionResult Index()
         {
+            ClaimsPrincipal claimsUser = HttpContext.User;
+            string nombreUsuario = "";
+            string fotoPerfil = "";
+
+            if (claimsUser.Identity.IsAuthenticated)
+            {
+                nombreUsuario = claimsUser.Claims.Where(c => c.Type == ClaimTypes.Name)
+                    .Select(c => c.Value).SingleOrDefault();
+
+                fotoPerfil = claimsUser.Claims.Where(c => c.Type == "FotoPerfil")
+                    .Select(c => c.Value).SingleOrDefault();
+
+            }
+
+            ViewData["nombreUsuario"] = nombreUsuario;
+            ViewData["fotoPerfil"] = fotoPerfil;
             return View();
         }
 
@@ -27,6 +46,12 @@ namespace ProyectoVentas.Controllers
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        }
+
+        public async Task<IActionResult> CerrarSesion()
+        {
+            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+            return RedirectToAction("IniciarSesion", "Login");
         }
     }
 }
