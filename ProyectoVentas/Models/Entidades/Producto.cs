@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Mvc.Rendering;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ProyectoVentas.Models.Entidades
@@ -35,6 +36,10 @@ namespace ProyectoVentas.Models.Entidades
 
         public DateTime FechaCreacion { get; set; }
 
+        [Range(1, int.MaxValue, ErrorMessage = "Debes de seleccionar una categoria.")]
+        public int CategoriaId { get; set; }
 
+        [NotMapped]
+        public IEnumerable<SelectListItem> Categorias { get; set; }
     }
 }

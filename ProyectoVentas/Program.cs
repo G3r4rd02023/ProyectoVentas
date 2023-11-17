@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using ProyectoVentas.Models;
+using ProyectoVentas.Services;
 
 namespace ProyectoVentas
 {
@@ -16,6 +17,9 @@ namespace ProyectoVentas
             {
                 o.UseSqlServer(builder.Configuration.GetConnectionString("CadenaSQL"));
             });
+
+            builder.Services.AddScoped<IServicioLista, ServicioLista>();
+            builder.Services.AddScoped<IServicioImagen, ServicioImagen>();
 
             var app = builder.Build();
 
