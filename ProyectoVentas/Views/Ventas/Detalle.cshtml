@@ -1,0 +1,110 @@
+﻿@model ProyectoVentas.Models.Entidades.DetalleVenta
+@{
+    ViewData["Title"] = "Detalle";
+}
+
+<h6>Pedido</h6>
+<hr />
+<dl class="row">
+    <dt class="col-sm-2">
+        Fecha
+    </dt>
+    <dd class="col-sm-10">
+        @Html.DisplayFor(model => model.Venta.FechaCreacion)
+    </dd>
+    <dt class="col-sm-2">
+        Cliente
+    </dt>
+    <dd class="col-sm-10">
+        @Html.DisplayFor(model => model.Venta.Usuario.NombreCompleto)
+    </dd>
+    <dt class="col-sm-2">
+        @Html.DisplayNameFor(model => model.Cantidad)
+    </dt>
+    <dd class="col-sm-10">
+        @Html.DisplayFor(model => model.Cantidad)
+    </dd>
+    <dt class="col-sm-2">
+        Total
+    </dt>
+    <dd class="col-sm-10">
+        L. @Html.DisplayFor(model => model.Total)
+    </dd>
+</dl>
+
+@section Estilos {
+    <link href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css" rel="stylesheet" />
+}
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header">
+                <h5>Productos</h5>
+            </div>
+            <div class="card-body">
+                <table class="table table-hover table responsive table stripped" id="detalle">
+                    <thead>
+                        <tr>
+                            <th>
+                                Producto
+                            </th>                          
+                            <th>
+                                Precio
+                            </th>
+                            <th>
+                                Cantidad
+                            </th>
+                            <th>
+                                Total
+                            </th>
+                            <th>
+                                Imagen
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.Venta.DetalleVentas)
+                        {
+                            <tr>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Producto.Nombre)
+                                </td>                              
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Producto.PrecioOferta)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Cantidad)
+                                </td>
+                                <td>
+                                    L. @Html.DisplayFor(modelItem => item.Total)
+                                </td>
+                                <td>
+                                    <div class="zoom">
+                                        <img src="@item.Producto.URLImagen" style="width:100px;" />
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            $('#detalle').DataTable(
+                {
+                    "language": {
+                        url: "https://cdn.datatables.net/plug-ins/1.11.5/i18n/es-ES.json"
+                    },
+
+                });
+        });
+    </script>
+}

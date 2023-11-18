@@ -1,0 +1,81 @@
+﻿@model IEnumerable<ProyectoVentas.Models.Entidades.DetalleVenta>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+@section Estilos {    
+    <link href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css" rel="stylesheet" />
+}
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header">
+                <h5>Pedidos</h5>
+            </div>
+            <div class="card-body">
+                <table class="table table-hover table responsive table stripped" id="venta">
+                    <thead>
+                        <tr>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Venta.FechaCreacion)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Venta.Usuario.NombreCompleto)
+                            </th>                                                    
+                            <th>
+                                @Html.DisplayNameFor(model => model.Cantidad)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Total)
+                            </th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Venta.FechaCreacion)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Venta.Usuario.NombreCompleto)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Cantidad)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Total)
+                                </td>                                
+                                <td>
+                                    <a asp-action="Detalle" asp-route-id="@item.Id" class="btn btn-outline-info"><i class="fa-solid fa-circle-info"></i></a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            $('#venta').DataTable(
+                {
+                    "language": {
+                        url: "https://cdn.datatables.net/plug-ins/1.11.5/i18n/es-ES.json"
+                    },
+
+                });
+        });
+    </script>
+}
+
+
+
