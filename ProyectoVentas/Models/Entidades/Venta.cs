@@ -12,5 +12,7 @@ namespace ProyectoVentas.Models.Entidades
         public int Total { get; set; }
 
         public DateTime FechaCreacion { get; set; }
+
+        public ICollection<DetalleVenta> DetalleVentas { get; set; }
     }
 }

@@ -15,6 +15,12 @@
     }
 </style>
 
+@if (TempData["ALertMessage"] != null)
+{
+    <div class=" alert alert-success">
+        <strong> Ok!!---</strong>@TempData["AlertMessage"]
+    </div>
+}
 
     <div class="row">
         @foreach (var producto in Model)
@@ -27,10 +33,11 @@
                         <p class="card-text">@producto.Descripcion</p>
                         <p class="card-text">Precio: L. @producto.Precio</p>
                         <div class="d-flex justify-content-between align-items-center">
-                            <div class="btn-group">                              
-                                <button type="button" class="btn btn-sm btn-outline-success">Agregar al carrito</button>
+                            <div class="btn-group">                                                             
                             <a onclick="showInPopup('@Url.Action("Detalles", "Catalogo", new { id =producto.Id }, Context.Request.Scheme)' ,
                             '')" class="btn btn-outline-info btn-sm">Ver Detalles </a>
+                            <a onclick="showInPopup('@Url.Action("Vender", "Catalogo", new { id =producto.Id }, Context.Request.Scheme)' ,
+                            '')" class="btn btn-outline-success btn-sm">Agregar al carrito </a>
                             </div>
                         </div>
                     </div>
