@@ -16,10 +16,10 @@ namespace ProyectoVentas.Controllers
 
         public async Task<IActionResult> Index()
         {
-            return View(await _context.DetalleVentas
-                .Include(sd => sd.Venta)                
-                .ThenInclude(sd => sd.Usuario)
-                .Include(sd => sd.Producto)
+            return View(await _context.Ventas
+                .Include(sd => sd.DetalleVentas)                
+                .ThenInclude(sd => sd.Producto)
+                .Include(sd => sd.Usuario)
                 .ToListAsync());
         }
 
@@ -30,10 +30,10 @@ namespace ProyectoVentas.Controllers
                 return NotFound();
             }
 
-            DetalleVenta detalle = await _context.DetalleVentas
-                .Include(sd => sd.Venta)
-                .ThenInclude(sd => sd.Usuario)
-                .Include(sd => sd.Producto)                
+            Venta detalle = await _context.Ventas
+                .Include(sd => sd.DetalleVentas)
+                .ThenInclude(sd => sd.Producto)
+                .Include(sd => sd.Usuario)                
                 .FirstOrDefaultAsync(s => s.Id == id);
             if (detalle == null)
             {

@@ -48,6 +48,22 @@ namespace ProyectoVentas.Controllers
                 return NotFound();
             }
 
+            // Obtener o crear el carrito del usuario
+            Venta venta = await _context.Ventas
+                .Include(c => c.DetalleVentas)
+                .FirstOrDefaultAsync(c => c.Usuario.Id == usuario.Id && c.FechaCreacion == DateTime.Today);
+
+            if (venta == null)
+            {
+                venta = new Venta
+                {
+                    FechaCreacion = DateTime.Now,
+                    DetalleVentas = new List<DetalleVenta>(),
+                    Total = 0,
+                    Usuario = usuario,
+                };
+            }
+
             var producto = await _context.Productos.FindAsync(id);
 
             if (producto == null)
@@ -62,7 +78,7 @@ namespace ProyectoVentas.Controllers
                 Precio = producto.Precio,
                 URLImagen = producto.URLImagen,
                 Usuario = usuario,
-                DetalleVentas = new List<DetalleVenta>()
+                DetalleVentas = venta.DetalleVentas.ToList(),
             };
 
             return View(model);
@@ -84,17 +100,27 @@ namespace ProyectoVentas.Controllers
                 {
                     return NotFound();
                 }
-                try
+
+                // Obtener o crear el carrito del usuario
+                Venta venta = await _context.Ventas
+                    .Include(c => c.DetalleVentas)
+                    .ThenInclude(c => c.Producto)
+                    .FirstOrDefaultAsync(c => c.Usuario.Id == usuario.Id && c.FechaCreacion == DateTime.Today);
+
+                if (venta == null)
                 {
-                    var nuevaVenta = new Venta
+                    venta = new Venta
                     {
-                        FechaCreacion = DateTime.Today,
+                        FechaCreacion = DateTime.Now,
                         DetalleVentas = new List<DetalleVenta>(),
                         Total = 0,
                         Usuario = usuario,
                     };
+                }
 
-                    nuevaVenta.DetalleVentas.Add(new DetalleVenta
+                try
+                {
+                    venta.DetalleVentas.Add(new DetalleVenta
                     {
                         Producto = producto,
                         Cantidad = model.Cantidad,
@@ -102,12 +128,16 @@ namespace ProyectoVentas.Controllers
                     });
 
                     // Calcular el total sumando los subtotales de cada detalle
-                    nuevaVenta.Total = nuevaVenta.DetalleVentas.Sum(d => d.Cantidad * (int)d.Producto.PrecioOferta);
+                    venta.Total = venta.DetalleVentas.Sum(d => d.Cantidad * (int)d.Producto.PrecioOferta);
 
+                    if (venta.Id == 0)
+                    {
+                        // Si el carrito no existe en la base de datos, agregarlo
+                        _context.Add(venta);
+                    }
 
-                    _context.Add(nuevaVenta);
                     await _context.SaveChangesAsync();
-                    TempData["AlertMessage"] = "Gracias por tu compra!!!";
+                    TempData["AlertMessage"] = "Producto agregado al carrito!!!";
                 }
                 catch (Exception ex)
                 {

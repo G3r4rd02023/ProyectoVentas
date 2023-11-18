@@ -49,7 +49,7 @@ namespace ProyectoVentas.Controllers
                 {
 
                     producto.URLImagen = urlimagen;
-                    producto.FechaCreacion = DateTime.Today;
+                    producto.FechaCreacion = DateTime.Now;
                     _context.Add(producto);
                     await _context.SaveChangesAsync();
                     TempData["AlertMessage"] = "Producto creado exitosamente!!!";
@@ -110,7 +110,7 @@ namespace ProyectoVentas.Controllers
                     productoExistente.Precio = producto.Precio;
                     productoExistente.PrecioOferta = producto.PrecioOferta;
                     productoExistente.Cantidad = producto.Cantidad;
-                    productoExistente.FechaCreacion = DateTime.Today;
+                    productoExistente.FechaCreacion = DateTime.Now;
                     _context.Update(productoExistente);
                     await _context.SaveChangesAsync();
                     TempData["AlertMessage"] = "Producto actualizado exitosamente!!!";

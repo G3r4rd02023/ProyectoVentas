@@ -31,7 +31,7 @@ namespace ProyectoVentas.Controllers
             {
                 try
                 {
-                    categoria.FechaCreacion = DateTime.Today;
+                    categoria.FechaCreacion = DateTime.Now;
                     _context.Add(categoria);
                     await _context.SaveChangesAsync();
                     TempData["AlertMessage"] = "Categoria creada exitosamente!!!";
@@ -72,7 +72,7 @@ namespace ProyectoVentas.Controllers
             {
                 try
                 {
-                    categoria.FechaCreacion = DateTime.Today;
+                    categoria.FechaCreacion = DateTime.Now;
                     _context.Update(categoria);
                     await _context.SaveChangesAsync();
                     TempData["AlertMessage"] = "Categoria actualizada exitosamente!!!";

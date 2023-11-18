@@ -1,4 +1,4 @@
-﻿@model IEnumerable<ProyectoVentas.Models.Entidades.DetalleVenta>
+﻿@model IEnumerable<ProyectoVentas.Models.Entidades.Venta>
 
 @{
     ViewData["Title"] = "Index";
@@ -19,16 +19,16 @@
                     <thead>
                         <tr>
                             <th>
-                                @Html.DisplayNameFor(model => model.Venta.FechaCreacion)
+                                Fecha
                             </th>
                             <th>
-                                @Html.DisplayNameFor(model => model.Venta.Usuario.NombreCompleto)
-                            </th>                                                    
+                                Cliente
+                            </th> 
                             <th>
-                                @Html.DisplayNameFor(model => model.Cantidad)
+                                Imagen
                             </th>
                             <th>
-                                @Html.DisplayNameFor(model => model.Total)
+                                Total
                             </th>
                             <th></th>
                         </tr>
@@ -38,13 +38,13 @@
                         {
                             <tr>
                                 <td>
-                                    @Html.DisplayFor(modelItem => item.Venta.FechaCreacion)
+                                    @Html.DisplayFor(modelItem => item.FechaCreacion)
                                 </td>
                                 <td>
-                                    @Html.DisplayFor(modelItem => item.Venta.Usuario.NombreCompleto)
-                                </td>
+                                    @Html.DisplayFor(modelItem => item.Usuario.NombreCompleto)
+                                </td> 
                                 <td>
-                                    @Html.DisplayFor(modelItem => item.Cantidad)
+                                    <img src="@item.Usuario.URLFotoPerfil" style="width:100px; border-radius: 50%;" />
                                 </td>
                                 <td>
                                     @Html.DisplayFor(modelItem => item.Total)
