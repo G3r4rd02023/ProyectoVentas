@@ -3,6 +3,8 @@ using Microsoft.EntityFrameworkCore;
 using ProyectoVentas.Models;
 using ProyectoVentas.Models.Entidades;
 using ProyectoVentas.Services;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
+using System.Drawing.Printing;
 
 namespace ProyectoVentas.Controllers
 {
@@ -17,10 +19,53 @@ namespace ProyectoVentas.Controllers
             _servicioUsuario = servicioUsuario;
         }
 
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string sortOrder, string currentFilter, string searchString, int? pageNumber)
         {
-            return View(await _context.Productos.ToListAsync());
+            ViewData["CurrentSort"] = sortOrder;
+            ViewData["NameSortParm"] = String.IsNullOrEmpty(sortOrder) ? "NameDesc" : "";
+            ViewData["PriceSortParm"] = sortOrder == "Price" ? "PriceDesc" : "Price";
+            if (searchString != null)
+            {
+                pageNumber = 1;
+            }
+            else
+            {
+                searchString = currentFilter;
+            }
+            ViewData["CurrentFilter"] = searchString;
+
+            IQueryable<Producto> query = _context.Productos
+                .Include(p => p.Categoria)
+                .Where(p => p.Cantidad > 0);
+
+            if (!string.IsNullOrEmpty(searchString))
+            {
+                query = query
+                    .Where(p => (p.Nombre.ToLower().Contains(searchString.ToLower()) ||
+                                p.Categoria.Nombre.ToLower().Contains(searchString.ToLower())));
+            }
+
+            switch (sortOrder)
+            {
+                case "NameDesc":
+                    query = query.OrderByDescending(p => p.Nombre);
+                    break;
+                default:
+                    query = query.OrderBy(p => p.Nombre);
+                    break;
+            }
+
+            int pageSize = 8;
+
+            CatalogoViewModel model = new()
+            {
+                Productos = await PaginatedList<Producto>.CreateAsync(query, pageNumber ?? 1, pageSize),
+                Categorias = await _context.Categorias.ToListAsync(),
+            };
+
+            return View(model);
         }
+
 
         public async Task<IActionResult> Detalles(int? id)
         {
